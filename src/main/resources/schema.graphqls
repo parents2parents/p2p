@@ -1,0 +1,50 @@
+type Kindergarten {
+    id: ID!
+    url: String!
+    description: String!
+    postedBy: User
+}
+
+type Query {
+    allKindergartens(filter: KindergartenFilter): [Kindergarten]
+}
+input KindergartenFilter {
+    description_contains: String
+    url_contains: String
+}
+type Mutation {
+    createUser(name: String!, authProvider: AuthData!): User
+    createKindergarten(url: String!, description: String!): Kindergarten
+    signinUser(auth: AuthData): SigninPayload
+    createVote(kindergartenId: ID, userId: ID): Vote
+}
+
+type Vote {
+    id: ID!
+    createdAt: DateTime!
+    user: User!
+    kindergarten: Kindergarten!
+}
+
+scalar DateTime
+
+type SigninPayload {
+    token: String
+    user: User
+}
+type User {
+    id: ID!
+    name: String!
+    email: String
+    password: String
+}
+
+input AuthData {
+    email: String!
+    password: String!
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}
